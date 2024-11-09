@@ -90,7 +90,7 @@ local headers = {
 			[[                                                                       ]],
 			"--- "..current_time.." --- and --- There is "..plugins_count .." plugins ---",
 		},
-		color = "#F4DEB3"
+		color = "#cba6f7"
 	},
 }
 
