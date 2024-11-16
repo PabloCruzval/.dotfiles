@@ -36,6 +36,7 @@ def hyprland_write(file, file_lines, property_one, property_two):
             else:
                 file.write(line)
 
+<<<<<<< HEAD
 def obtain_each_line(dir):
     with open(dir, 'r') as file:
         return file.readlines()
@@ -66,10 +67,42 @@ with open(waybar, 'w') as file:
         #             actual_line.append(waybar_lines[line+index])
         #             index += 1
             
+=======
+# Change the borders in visual.conf
+with open(hypr_visual, 'w') as file:
+    borders = [0, 0]
+    for line in visual_lines:
+        if "$active_border_one" in line and not borders[0]:
+            file.write(f"$active_border_one = {config[config_name]["active_border_one"]}\n")
+            borders[0] = 1
+        elif "$active_border_two" in line and not borders[1]:
+            file.write(f"$active_border_two = {config[config_name]["active_border_two"]}\n")
+            borders[1] = 1
+>>>>>>> c80c438 (Hyprland theme script change)
         else:
             file.write(waybar_lines[line])
 
+<<<<<<< HEAD
 os.system("hyprctl reload > nul")
 os.system(f"hyprctl hyprpaper wallpaper \"DP-1,{config[config_name]["wallpaper_one_dir"]}\" > nul")
 os.system(f"hyprctl hyprpaper wallpaper \"HDMI-A-1,{config[config_name]["wallpaper_two_dir"]}\" > nul")
 os.system(f"~/.dotfiles/waybar/launch.sh & diswon > nul")
+=======
+# Change the wallpaper
+with open(hypr_paper, 'w') as file:
+    wallpapers = [0, 0]
+    for line in paper_lines:
+        if "$wallpaper_one" in line and not wallpapers[0]:
+            file.write(f"$wallpaper_one = {config[config_name]["wallpaper_one"]}\n")
+            wallpapers[0] = 1
+        elif "$wallpaper_two" in line and not wallpapers[1]:
+            file.write(f"$wallpaper_two = {config[config_name]["wallpaper_two"]}\n")
+            wallpapers[1] = 1
+        else:
+            file.write(line)
+
+
+os.system("hyprctl reload > nul")
+os.system(f"hyprctl hyprpaper wallpaper \"DP-1,{config[config_name]["wallpaper_one_dir"]}\" > nul")
+os.system(f"hyprctl hyprpaper wallpaper \"HDMI-A-1,{config[config_name]["wallpaper_two_dir"]}\" > nul")
+>>>>>>> c80c438 (Hyprland theme script change)
