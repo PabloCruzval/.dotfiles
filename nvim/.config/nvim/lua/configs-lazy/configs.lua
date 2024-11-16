@@ -1,20 +1,41 @@
 ------ LSP ------
 --- Mason
 local mason = function()
-	return {
-		require('mason').setup()
-	}
+	require('mason').setup()
 end
 
 --- Mason Lsp Config
 local mason_lspconfig = function()
-	return {
-		require('mason-lspconfig').setup({
-			ensure_installed = {'lua_ls'},
-			automatic_installation = true,
-			run_on_start = true,
-		}),
-	}
+	require('mason-lspconfig').setup({
+		ensure_installed = {'lua_ls'},
+		automatic_installation = true,
+		run_on_start = true,
+	})
+
+	require("mason-lspconfig").setup_handlers({
+
+		function (server_name)
+			require("lspconfig")[server_name].setup({})
+		end,
+
+		["arduino_language_server"] = function ()
+			require("lspconfig").arduino_language_server.setup{
+				cmd = {
+						"arduino-language-server",
+						"-cli-config",
+						"/home/nyx/.arduino15/arduino-cli.yaml",
+						"-cli",
+						"arduino-cli",
+						"-clangd",
+						"clangd",
+						"-fqbn",
+						"arduino:avr:uno",
+					},
+				filetypes = { "arduino", "ino" },
+				root_dir = require("lspconfig.util").root_pattern(".git", "*.ino") or vim.fn.getcwd(),
+			}
+		end,
+	})
 end
 
 --- Lsp Config
@@ -27,6 +48,12 @@ local lspconfig = function()
 	map('<space>ld', vim.lsp.buf.definition, 'LSP: Go to definition')
 	map('ca', vim.lsp.buf.code_action, 'LSP')
 	map('<space>rn', vim.lsp.buf.rename, 'LSP: Rename')
+
+	-- require('lspconfig').arduino_language_server.setup ({
+	-- 	  cmd = { "~/go/bin/arduino-language-server", "-cli-config", "/home/nyx/.arduino15/arduino-cli.yaml", "-cli", "arduino-cli", "-clangd", "clangd", "-fqbn", "arduino:avr:uno" },
+	-- 
+	-- })
+	-- require("lspconfig").clangd.setup({})
 
 end
 
