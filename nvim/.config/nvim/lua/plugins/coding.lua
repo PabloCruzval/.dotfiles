@@ -15,12 +15,7 @@ return {
 		lazy = false,
 		config = function()
 			options.mason_lspconfig()
-			require('mason-lspconfig').setup_handlers({
-				function(server)
-					require('lspconfig')[server].setup({})
-				end
-			})
-		end
+		end,
 	},
 
 	{
