@@ -69,6 +69,7 @@ alias ls='ls -l --color'
 alias blth='~/.config/hypr/scripts/bluetooth_auto_connect.sh'
 alias tor='~/programs/tor/start-tor-browser & disown; exit'
 alias hyprconf='python ~/.config/hypr/scripts/change.py'
+alias py="python"
 
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
