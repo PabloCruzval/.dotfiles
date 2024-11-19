@@ -12,7 +12,7 @@ g.maplocalleader = ' '
 o.number = true
 o.relativenumber = true
 o.numberwidth = 2
-
+o.conceallevel = 1
 --- Tabs ---
 o.tabstop = 3
 o.softtabstop = 3

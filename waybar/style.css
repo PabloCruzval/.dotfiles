@@ -1,3 +1,12 @@
+@define-color b-text-color rgb (49, 50, 68);
+@define-color w-text-color rgb (124, 129, 140);
+@define-color arch rgb (116, 199, 236);
+@define-color window rgb (249, 226, 175);
+@define-color pulse-audio rgb (243, 139, 168);
+@define-color clock rgb (245, 224, 220);
+@define-color cpu rgb (235, 160, 172);
+@define-color language rgb (243, 139, 168);
+
 * {
     border: none;
     border-radius: 0;
@@ -32,7 +41,7 @@ window#waybar.hidden {
 
 #workspaces button {
     transition: none;
-    color: #7c818c;
+    color: @b-text-color;
     background: transparent;
     padding: 7px;
 }
@@ -50,8 +59,8 @@ window#waybar.hidden {
 	border-radius: 14px;
 	padding-left: 10px;
 	padding-right: 10px;
-	background: #74c7ec;
-	color: #313244;
+	background: @arch;
+	color: @b-text-color;
 	margin-right: 8px;
 }
 
@@ -68,8 +77,8 @@ window#waybar.hidden {
 	border-radius: 14px;
 	padding-left: 8px;
 	padding-right: 8px;
-	background: #f9e2af;
-	color: #313244;
+	background: @window;
+	color: @b-text-color;
 }
 
 window#waybar.empty #window {
@@ -80,8 +89,8 @@ window#waybar.empty #window {
 	border-radius: 14px;
 	padding-left: 10px;
 	padding-right: 10px;
-	background: #f38ba8;
-	color: #313244;
+	background: @language;
+	color: @b-text-color;
 	margin-right: 8px;
 }
 
@@ -90,8 +99,8 @@ window#waybar.empty #window {
 	margin-right: 8px;
 	padding-left: 16px;
 	padding-right: 16px;
-	background: #cba6f7;
-	color: #313244;
+	background: @pulse-audio;
+	color: @b-text-color;
 	font-size: 16px;
 }
 
@@ -103,8 +112,8 @@ window#waybar.empty #window {
 	border-radius: 14px;
 	padding-left: 10px;
 	padding-right: 10px;
-	background: #eba0ac;
-	color: #313244;
+	background: @cpu;
+	color: @b-text-color;
 	margin-right: 8px;
 }
 
@@ -112,7 +121,7 @@ window#waybar.empty #window {
 	border-radius: 14px;
 	padding-left: 10px;
 	padding-right: 10px;
-	background: #f5e0dc;
-	color: #313244;
+	background: @clock;
+	color: @b-text-color;
 	margin-right: 8px;
 }

@@ -19,6 +19,25 @@ return {
 	},
 
 	{
+		"mfussenegger/nvim-lint",
+		lazy = false,
+		dependencies =
+			{
+				{
+					"rshkarin/mason-nvim-lint",
+					config = function ()
+						require("mason-nvim-lint")
+					end
+				},
+			},
+		config = function ()
+			require('lint').linters_by_ft = {
+			  markdown = {'vale'},
+			}
+		end
+	},
+
+	{
 		'neovim/nvim-lspconfig',
 		lazy = false,
 		config = function()
