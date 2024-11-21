@@ -3,7 +3,7 @@ local options = require 'configs-lazy.configs'
 return {
 	{
 		"lervag/vimtex",
-		ft = {'tex'},
+		ft = { 'tex' },
 		init = function()
 			options.vimtex()
 		end

@@ -7,30 +7,30 @@ end
 --- Mason Lsp Config
 local mason_lspconfig = function()
 	require('mason-lspconfig').setup({
-		ensure_installed = {'lua_ls'},
+		ensure_installed = { 'lua_ls' },
 		automatic_installation = true,
 		run_on_start = true,
 	})
 
 	require("mason-lspconfig").setup_handlers({
 
-		function (server_name)
+		function(server_name)
 			require("lspconfig")[server_name].setup({})
 		end,
 
-		["arduino_language_server"] = function ()
-			require("lspconfig").arduino_language_server.setup{
+		["arduino_language_server"] = function()
+			require("lspconfig").arduino_language_server.setup {
 				cmd = {
-						"arduino-language-server",
-						"-cli-config",
-						"/home/nyx/.arduino15/arduino-cli.yaml",
-						"-cli",
-						"arduino-cli",
-						"-clangd",
-						"clangd",
-						"-fqbn",
-						"arduino:avr:uno",
-					},
+					"arduino-language-server",
+					"-cli-config",
+					"/home/nyx/.arduino15/arduino-cli.yaml",
+					"-cli",
+					"arduino-cli",
+					"-clangd",
+					"clangd",
+					"-fqbn",
+					"arduino:avr:uno",
+				},
 				filetypes = { "arduino", "ino" },
 				root_dir = require("lspconfig.util").root_pattern(".git", "*.ino") or vim.fn.getcwd(),
 			}
@@ -48,15 +48,59 @@ local lspconfig = function()
 	map('<space>ld', vim.lsp.buf.definition, 'LSP: Go to definition')
 	map('ca', vim.lsp.buf.code_action, 'LSP')
 	map('<space>rn', vim.lsp.buf.rename, 'LSP: Rename')
-
-	-- require('lspconfig').arduino_language_server.setup ({
-	-- 	  cmd = { "~/go/bin/arduino-language-server", "-cli-config", "/home/nyx/.arduino15/arduino-cli.yaml", "-cli", "arduino-cli", "-clangd", "clangd", "-fqbn", "arduino:avr:uno" },
-	-- 
-	-- })
-	-- require("lspconfig").clangd.setup({})
-
 end
 
+--- Linting & Format
+
+local nvim_lint = function()
+	local lint = require "lint"
+
+	lint.linters_by_ft = {
+		javascript = { "eslint_d" },
+		python = { "pylint" },
+		markdown = { "markdownlint" },
+	}
+
+	local lint_augroup = vim.api.nvim_create_augroup("lint", { clear = true })
+
+	vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+		group = lint_augroup,
+		callback = function()
+			lint.try_lint()
+		end
+	})
+end
+
+local conform = function()
+	local conform = require("conform")
+
+	conform.setup({
+		formatters_by_ft = {
+			markdown = { "markdownlint", "prettier" },
+			lua = { " stylua" },
+			python = { "isort", "black" },
+		},
+		format_on_save = {
+			lsp_fallback = true,
+			async = false,
+			timeout_ms = 500,
+		},
+		formatters = {
+			markdownlint = {
+				command = "markdownlint-cli2",
+				args = { "--fix", "$FILENAME" },
+			}
+		}
+	})
+
+	vim.keymap.set({ "n", "v" }, "<leader>ff", function()
+		conform.format({
+			lsp_fallback = true,
+			async = false,
+			timeout_ms = 500,
+		})
+	end, { desc = "format file" })
+end
 ------ CMP ------
 local cmp = function()
 	local cmp = require 'cmp'
@@ -98,10 +142,10 @@ local dap_conf = function()
 	require('mason-nvim-dap').setup({
 		handlers = {},
 	})
-	dap.listeners.before.attach.dapui_config = function ()
+	dap.listeners.before.attach.dapui_config = function()
 		dapui.open()
 	end
-	dap.listeners.before.launch.dapui_config = function ()
+	dap.listeners.before.launch.dapui_config = function()
 		dapui.open()
 	end
 	dap.listeners.before.event_terminated.dapui_config = function()
@@ -150,7 +194,7 @@ end
 ------ Nvim Tree ------
 
 local nvim_tree = function()
-	 return {
+	return {
 		sort = {
 			sorter = 'case_sensitive',
 		},
@@ -173,7 +217,7 @@ local neotree = function()
 		filesystem = {
 			filtered_items = {
 				hide_dotfiles = false,
-	 	}
+			}
 		},
 	})
 end
@@ -182,7 +226,7 @@ end
 local lualine = function()
 	require('lualine').setup({
 		--options = {
-			-- theme = 'dracula'
+		-- theme = 'dracula'
 		---}
 	})
 end
@@ -193,7 +237,7 @@ local telescope_ui_selector = function()
 	require('telescope').setup({
 		extensions = {
 			['ui-select'] = {
-				require('telescope.themes').get_dropdown{
+				require('telescope.themes').get_dropdown {
 				}
 			}
 		}
@@ -209,32 +253,32 @@ local alpha = function()
 	local dashboard = require 'alpha.themes.dashboard'
 
 	local function alpha_format_text(text)
-		 return {
-			  type = 'text',
-			  val = text,
-			  opts = { hl = 'NvimDashColor', shrink_margin = false, position = 'center' },
-		 }
+		return {
+			type = 'text',
+			val = text,
+			opts = { hl = 'NvimDashColor', shrink_margin = false, position = 'center' },
+		}
 	end
 
 	local function format_text(text)
-		 local formated_text = {}
-		 for _, line in ipairs(text) do
-			  table.insert(formated_text, alpha_format_text(line))
-		 end
-		 return formated_text
+		local formated_text = {}
+		for _, line in ipairs(text) do
+			table.insert(formated_text, alpha_format_text(line))
+		end
+		return formated_text
 	end
 
-	 dashboard.section.header.type = 'group'
-	 dashboard.section.header.val = format_text(alpha_dashboards_headers)
+	dashboard.section.header.type = 'group'
+	dashboard.section.header.val = format_text(alpha_dashboards_headers)
 
-	 dashboard.section.buttons.val = {
-		  dashboard.button('e', '  New File', ':ene <BAR> startinsert <CR>'),
-		  dashboard.button('f', '  Find File', '<cmd> Telescope find_files <CR>'),
-		  dashboard.button('r', '  Recently Opened Files', ':Telescope oldfiles<CR>'),
-		  dashboard.button('q', '󰩈  Exit', ':qa<CR>'),
-	 }
+	dashboard.section.buttons.val = {
+		dashboard.button('e', '  New File', ':ene <BAR> startinsert <CR>'),
+		dashboard.button('f', '  Find File', '<cmd> Telescope find_files <CR>'),
+		dashboard.button('r', '  Recently Opened Files', ':Telescope oldfiles<CR>'),
+		dashboard.button('q', '󰩈  Exit', ':qa<CR>'),
+	}
 
-	 alpha.setup(dashboard.opts)
+	alpha.setup(dashboard.opts)
 end
 
 ------ Transparent ------
@@ -261,28 +305,28 @@ local transparent = function()
 	require('transparent').clear_prefix('which-key')
 end
 
-local better_escape = function ()
+local better_escape = function()
 	require('better_escape').setup({
-	timeout = 100,
-	default_mappings = true,
-	mappings = {
-		i = {
-			j = {
-				k = '<Esc>',
+		timeout = 100,
+		default_mappings = true,
+		mappings = {
+			i = {
+				j = {
+					k = '<Esc>',
 				},
 			},
 		},
 	})
 end
 
-local ibl = function ()
+local ibl = function()
 	local scope = "focus"
 	local indent = "passive"
 	local hooks = require "ibl.hooks"
 
-	hooks.register(hooks.type.HIGHLIGHT_SETUP, function ()
-		vim.api.nvim_set_hl(0, "focus", { fg = "#f5c2e7"})
-		vim.api.nvim_set_hl(0, "passive", { fg = "#313244"})
+	hooks.register(hooks.type.HIGHLIGHT_SETUP, function()
+		vim.api.nvim_set_hl(0, "focus", { fg = "#f5c2e7" })
+		vim.api.nvim_set_hl(0, "passive", { fg = "#313244" })
 	end)
 
 	require("ibl").setup({
@@ -295,12 +339,12 @@ local ibl = function ()
 	})
 end
 
-local vimtex = function ()
+local vimtex = function()
 	vim.g.vimtex_compiler_latexmk = { out_dir = 'build' }
 	vim.cmd('syntax enable')
 end
 
-local obsidian = function ()
+local obsidian = function()
 	return {
 		opts = {
 			workspaces = {
@@ -312,7 +356,7 @@ local obsidian = function ()
 				nvim_cmp = true,
 				min_chars = 2,
 			},
-				
+
 			notes_subdir = "Limbo",
 			new_notes_location = "Limbo",
 			attachments = {
@@ -386,14 +430,15 @@ local obsidian = function ()
 
 			-- Settings for templates
 			templates = {
-				subdir = "templates", -- Subdirectory for templates
+				subdir = "Templates", -- Subdirectory for templates
 				date_format = "%Y-%m-%d-%a", -- Date format for templates
 				gtime_format = "%H:%M", -- Time format for templates
-				tags = "", -- Default tags for templates
+				tags = "",           -- Default tags for templates
 			},
 		},
 	}
 end
+
 
 return {
 	cmp = cmp,
@@ -412,4 +457,6 @@ return {
 	vimtex = vimtex,
 	ibl = ibl,
 	obsidian = obsidian,
+	conform = conform,
+	nvim_lint = nvim_lint,
 }

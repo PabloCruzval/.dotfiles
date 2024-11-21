@@ -19,21 +19,10 @@ return {
 	},
 
 	{
-		"mfussenegger/nvim-lint",
-		lazy = false,
-		dependencies =
-			{
-				{
-					"rshkarin/mason-nvim-lint",
-					config = function ()
-						require("mason-nvim-lint")
-					end
-				},
-			},
-		config = function ()
-			require('lint').linters_by_ft = {
-			  markdown = {'vale'},
-			}
+		"stevearc/conform.nvim",
+		event = { "BufReadPre", "BufNewFIle" },
+		config = function()
+			options.conform()
 		end
 	},
 
@@ -42,6 +31,17 @@ return {
 		lazy = false,
 		config = function()
 			options.lspconfig()
+		end
+	},
+
+	{
+		"mfussenegger/nvim-lint",
+		event = {
+			"BufReadPre",
+			"BufNewFIle",
+		},
+		config = function()
+			options.nvim_lint()
 		end
 	},
 

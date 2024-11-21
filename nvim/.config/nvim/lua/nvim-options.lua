@@ -19,7 +19,7 @@ o.softtabstop = 3
 o.shiftwidth = 3
 
 o.spelllang = 'es_es'
-
+o.spell = true
 --- Remove ~
 opt.fillchars = { eob = " " }
 
