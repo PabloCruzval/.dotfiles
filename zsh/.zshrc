@@ -7,6 +7,8 @@ fi
 
 # Directory of zinit and plugins
 ZINIT_HOME="${XDG_DATA_HOME:-${HOME}/.local/share}/zinit/zinit.git"
+fpath=($HOME/completion_zsh $fpath)
+
 
 # Downoad Zinit, if it's not there yet
 if [ ! -d "$ZINIT_HOME" ]; then
@@ -61,8 +63,8 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 # Alias:
-alias install="yay -S"
-alias remove="yay -R"
+alias install="sudo dnf install"
+alias remove="sudo dnf remove"
 alias apagar="shutdown 0"
 alias nv="nvim"
 alias ls='ls -l --color'
@@ -73,4 +75,7 @@ alias py="python"
 
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
+
+# Export
 export EDITOR='nvim'
+export PATH="/home/nyx/.cargo/bin/:$PATH"
