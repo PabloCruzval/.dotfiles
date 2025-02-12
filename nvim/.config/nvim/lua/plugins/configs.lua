@@ -28,6 +28,7 @@ local mason_lspconfig = function()
 					"clangd",
 					"-fqbn",
 					"arduino:avr:uno",
+					"esp32:esp32:esp32c3",
 				},
 				filetypes = { "arduino", "ino" },
 				root_dir = require("lspconfig.util").root_pattern(".git", "*.ino") or vim.fn.getcwd(),
@@ -61,7 +62,7 @@ local nvim_cmp = function()
 		sources = cmp.config.sources({
 			{ name = "nvim_lsp" },
 			{ name = "luasnip" },
-		}, {
+			{ name = "path" },
 			{ name = "buffer" },
 		}),
 	})
@@ -176,12 +177,12 @@ local obsidian = function()
 				end,
 				opts = { buffer = true, desc = "Toggle checkbox" },
 			},
-			-- Create a new newsletter issue
+			-- Create a new note
 			["<leader>onn"] = {
 				action = function()
 					vim.cmd("ObsidianNew")
 				end,
-				opts = { buffer = true, desc = "Create a new newsletter" },
+				opts = { desc = "Create a new note" },
 			},
 			["<leader>ont"] = {
 				action = function()
@@ -222,10 +223,10 @@ local obsidian = function()
 		end,
 		-- Settings for templates
 		templates = {
-			subdir = "Templates",  -- Subdirectory for templates
+			subdir = "Templates", -- Subdirectory for templates
 			date_format = "%Y-%m-%d-%a", -- Date format for templates
 			gtime_format = "%H:%M", -- Time format for templates
-			tags = "",             -- Default tags for templates
+			tags = "", -- Default tags for templates
 		},
 	}
 end

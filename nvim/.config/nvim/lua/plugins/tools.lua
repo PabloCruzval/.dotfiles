@@ -32,6 +32,7 @@ return {
 			"L3MON4D3/LuaSnip",
 			"saadparwaiz1/cmp_luasnip",
 			"rafamadriz/friendly-snippets",
+			"hrsh7th/cmp-path",
 		},
 		config = function()
 			config.nvim_cmp()
@@ -106,10 +107,16 @@ return {
 			require("Comment").setup()
 		end,
 	},
+
+	--- Obsidian
 	{
 		"epwalsh/obsidian.nvim",
+		lazy = false,
+		cond = function()
+			local carpeta = vim.fn.getcwd() .. "/.obsidian"
+			return vim.fn.isdirectory(carpeta) == 1
+		end,
 		version = "*",
-		ft = "markdown",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 		},
