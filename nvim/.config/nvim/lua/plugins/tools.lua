@@ -67,6 +67,13 @@ return {
 			config.none_ls()
 		end,
 	},
+	{
+		"stevearc/conform.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		config = function()
+			config.conform()
+		end,
+	},
 
 	--- Auto pairs
 	{
@@ -106,6 +113,18 @@ return {
 		config = function()
 			require("Comment").setup()
 		end,
+	},
+	{
+		"nvim-neo-tree/neo-tree.nvim",
+		lazy = false,
+		dependencies = {
+			'nvim-lua/plenary.nvim',
+			'nvim-tree/nvim-web-devicons',
+			'MunifTanjim/nui.nvim',
+		},
+		config = function()
+			config.neotree()
+		end
 	},
 
 	--- Obsidian

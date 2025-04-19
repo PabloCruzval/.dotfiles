@@ -1,0 +1,17 @@
+[window]
+
+decorations = "None"
+opacity = 0.95
+blur = true
+startup_mode = "Maximized"
+
+[font]
+
+normal = {family = "IosevkaTermNerdFont"}
+size = 13
+
+[colors.primary]
+
+foreground = "#a0b1d6"
+background = "#1a1b26"
+

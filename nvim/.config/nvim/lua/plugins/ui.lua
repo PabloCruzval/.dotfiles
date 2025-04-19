@@ -2,6 +2,14 @@ local config = require("plugins.configs")
 
 return {
 	{
+		"goolord/alpha-nvim",
+		lazy = false,
+		dependencies = { "kyazdani42/nvim-web-devicons"},
+		config = function ()
+			config.alpha()
+		end
+	},
+	{
 		"folke/tokyonight.nvim",
 		lazy = false,
 	},

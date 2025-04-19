@@ -68,6 +68,17 @@ local nvim_cmp = function()
 	})
 end
 
+--- Neo Tree
+local neotree = function()
+	require('neo-tree').setup({
+		filesystem = {
+			filtered_items = {
+				hide_dotfiles = false,
+			}
+		},
+	})
+end
+
 --- Debugger
 
 local nvim_dap = function()
@@ -88,6 +99,42 @@ local none_ls = function()
 			null_ls.builtins.formatting.prettier,
 		},
 	})
+end
+
+local conform = function()
+	local conform = require("conform")
+
+	conform.setup({
+		formatters_by_ft = {
+			javascript = { "prettier" },
+			typescript = { "prettier" },
+			javascriptreact = { "prettier" },
+			typescriptreact = { "prettier" },
+			svelte = { "prettier" },
+			css = { "prettier" },
+			html = { "prettier" },
+			json = { "prettier" },
+			yaml = { "prettier" },
+			-- markdown = { "prettier" },
+			graphql = { "prettier" },
+			liquid = { "prettier" },
+			lua = { "stylua" },
+			python = { "isort", "black", "autopep8" },
+		},
+		format_on_save = {
+			lsp_fallback = true,
+			async = false,
+			timeout_ms = 1000,
+		},
+	})
+
+	vim.keymap.set({ "n", "v" }, "<leader>mp", function()
+		conform.format({
+			lsp_fallback = true,
+			async = false,
+			timeout_ms = 1000,
+		})
+	end, { desc = "Format file or range (in visual mode)" })
 end
 
 --- Treesitter
@@ -120,6 +167,41 @@ local treesitter = function()
 	})
 end
 
+--- Alpha
+local alpha = function()
+	local alpha_dashboards_headers = require 'dashboards'
+	local alpha = require 'alpha'
+	local dashboard = require 'alpha.themes.dashboard'
+
+	local function alpha_format_text(text)
+		return {
+			type = 'text',
+			val = text,
+			opts = { hl = 'NvimDashColor', shrink_margin = false, position = 'center' },
+		}
+	end
+
+	local function format_text(text)
+		local formated_text = {}
+		for _, line in ipairs(text) do
+			table.insert(formated_text, alpha_format_text(line))
+		end
+		return formated_text
+	end
+
+	dashboard.section.header.type = 'group'
+	dashboard.section.header.val = format_text(alpha_dashboards_headers)
+
+	dashboard.section.buttons.val = {
+		dashboard.button('e', '  New File', ':ene <BAR> startinsert <CR>'),
+		dashboard.button('f', '  Find File', '<cmd> Telescope find_files <CR>'),
+		dashboard.button('r', '  Recently Opened Files', ':Telescope oldfiles<CR>'),
+		dashboard.button('q', '󰩈  Exit', ':qa<CR>'),
+	}
+
+	alpha.setup(dashboard.opts)
+end
+
 --- Telescope
 local telescope_ui_select = function()
 	require("telescope").setup({
@@ -148,10 +230,10 @@ local obsidian = function()
 			nvim_cmp = true,
 			min_chars = 2,
 		},
-		notes_subdir = "Limbo",
-		new_notes_location = "Limbo",
+		notes_subdir = "zLimbo",
+		new_notes_location = "zLimbo",
 		attachments = {
-			img_folder = "Files",
+			img_folder = "zFiles",
 		},
 		daily_notes = {
 			template = "note",
@@ -223,10 +305,10 @@ local obsidian = function()
 		end,
 		-- Settings for templates
 		templates = {
-			subdir = "Templates", -- Subdirectory for templates
+			subdir = "zTemplates", -- Subdirectory for templates
 			date_format = "%Y-%m-%d-%a", -- Date format for templates
 			gtime_format = "%H:%M", -- Time format for templates
-			tags = "", -- Default tags for templates
+			tags = "",             -- Default tags for templates
 		},
 	}
 end
@@ -241,4 +323,7 @@ return {
 	telescope_ui_select = telescope_ui_select,
 	lualine = lualine,
 	obsidian = obsidian,
+	alpha = alpha,
+	neotree = neotree,
+	conform = conform,
 }

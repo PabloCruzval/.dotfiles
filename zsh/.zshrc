@@ -63,8 +63,8 @@ zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
 # Alias:
-alias install="sudo dnf install"
-alias remove="sudo dnf remove"
+alias install="yay -S"
+alias remove="yay -R"
 alias apagar="shutdown 0"
 alias nv="nvim"
 alias ls='ls -l --color'
@@ -72,6 +72,7 @@ alias blth='~/.config/hypr/scripts/bluetooth_auto_connect.sh'
 alias tor='~/programs/tor/start-tor-browser & disown; exit'
 alias hyprconf='python ~/.config/hypr/scripts/change.py'
 alias py="python"
+alias nob="cd ~/Obsidian/Home/ && nvim /home/nyx/Obsidian/Home/Hubs/1741441427-global-hub.md"
 
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
