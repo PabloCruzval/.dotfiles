@@ -7,33 +7,7 @@ local mason_lspconfig = function()
 	local capabilities = require("cmp_nvim_lsp").default_capabilities()
 	require("mason-lspconfig").setup({
 		ensure_installed = { "lua_ls" },
-	})
-	--- Automatic lsp config
-	require("mason-lspconfig").setup_handlers({
-		function(server_name)
-			require("lspconfig")[server_name].setup({
-				capabilities = capabilities,
-			})
-		end,
-
-		["arduino_language_server"] = function()
-			require("lspconfig").arduino_language_server.setup({
-				cmd = {
-					"arduino-language-server",
-					"-cli-config",
-					"/home/nyx/.arduino15/arduino-cli.yaml",
-					"-cli",
-					"arduino-cli",
-					"-clangd",
-					"clangd",
-					"-fqbn",
-					"arduino:avr:uno",
-					"esp32:esp32:esp32c3",
-				},
-				filetypes = { "arduino", "ino" },
-				root_dir = require("lspconfig.util").root_pattern(".git", "*.ino") or vim.fn.getcwd(),
-			})
-		end,
+		automatic_enable = true,
 	})
 end
 
@@ -313,6 +287,22 @@ local obsidian = function()
 	}
 end
 
+local ibl = function()
+	require("ibl").setup({
+		indent = {
+			char = "▏", -- This is a slightly thinner char than the default one, check :help ibl.config.indent.char
+		},
+		scope = {
+			show_start = false,
+			show_end = false,
+		},
+	})
+	-- disable indentation on the first level
+	-- local hooks = require("ibl.hooks")
+	-- hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_space_indent_level)
+	-- hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_tab_indent_level)
+end
+
 return {
 	mason = mason,
 	mason_lspconfig = mason_lspconfig,
@@ -326,4 +316,5 @@ return {
 	alpha = alpha,
 	neotree = neotree,
 	conform = conform,
+	ibl = ibl,
 }

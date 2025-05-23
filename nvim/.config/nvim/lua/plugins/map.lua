@@ -9,7 +9,7 @@ map({ "n", "v" }, "<leader>bb", "<cmd> Telescope buffers <CR>", { desc = "Open B
 
 --- LSP
 map("n", "<leader>lh", vim.lsp.buf.hover, { desc = "LSP: Hover" })
-map("n", "<leader>ld", vim.lsp.buf.declaration, { desc = "LSP: Definition" })
+map("n", "<leader>ld", vim.diagnostic.open_float, { desc = "LSP: Diagnostic" })
 map("n", "<leader>ca", vim.lsp.buf.code_action, { desc = "LSP: Code Action" })
 map("n", "<leader>lr", vim.lsp.buf.rename, { desc = "LSP: Rename" })
 

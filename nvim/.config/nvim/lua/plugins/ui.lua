@@ -4,10 +4,10 @@ return {
 	{
 		"goolord/alpha-nvim",
 		lazy = false,
-		dependencies = { "kyazdani42/nvim-web-devicons"},
-		config = function ()
+		dependencies = { "kyazdani42/nvim-web-devicons" },
+		config = function()
 			config.alpha()
-		end
+		end,
 	},
 	{
 		"folke/tokyonight.nvim",
@@ -26,6 +26,21 @@ return {
 		keys = " ",
 		init = function()
 			require("which-key").setup()
+		end,
+	},
+	{
+		"chikko80/error-lens.nvim",
+		event = "BufAdd",
+		requires = { "nvim-telescope/telescope.nvim" },
+		opts = {},
+	},
+	{
+		"lukas-reineke/indent-blankline.nvim",
+		event = "BufAdd",
+		main = "ibl",
+		opts = {},
+		config = function()
+			config.ibl()
 		end,
 	},
 }

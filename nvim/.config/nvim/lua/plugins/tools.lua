@@ -19,6 +19,7 @@ return {
 
 	{
 		"neovim/nvim-lspconfig",
+		lazy = false,
 	},
 
 	--- Autocomplete

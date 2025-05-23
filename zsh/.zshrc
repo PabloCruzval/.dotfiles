@@ -34,6 +34,7 @@ zinit snippet OMZP::sudo
 zinit snippet OMZP::command-not-found
 
 # Load completions
+autoload ~/.dotfiles/zsh/completion-gh.sh
 autoload -U compinit && compinit
 
 zinit cdreplay -q
@@ -62,21 +63,30 @@ zstyle ':completion:*' menu no
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'ls --color $realpath'
 zstyle ':fzf-tab:complete:__zoxide_z:*' fzf-preview 'ls --color $realpath'
 
+# Colorscheme
+
+
 # Alias:
 alias install="yay -S"
 alias remove="yay -R"
 alias apagar="shutdown 0"
 alias nv="nvim"
 alias ls='ls -l --color'
-alias blth='~/.config/hypr/scripts/bluetooth_auto_connect.sh'
-alias tor='~/programs/tor/start-tor-browser & disown; exit'
-alias hyprconf='python ~/.config/hypr/scripts/change.py'
 alias py="python"
 alias nob="cd ~/Obsidian/Home/ && nvim /home/nyx/Obsidian/Home/Hubs/1741441427-global-hub.md"
-
+alias hellwalp="/home/nyx/Plantillas/HellWall/hellwalp.sh"
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
+
 
 # Export
 export EDITOR='nvim'
 export PATH="/home/nyx/.cargo/bin/:$PATH"
+# source /home/nyx/Plantillas/HellWall/colors-term.sh
+
+# bun completions
+[ -s "/home/nyx/.bun/_bun" ] && source "/home/nyx/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
