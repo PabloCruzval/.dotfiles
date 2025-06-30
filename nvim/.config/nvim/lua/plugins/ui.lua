@@ -2,21 +2,23 @@ local config = require("plugins.configs")
 
 return {
 	{
-		"goolord/alpha-nvim",
-		lazy = false,
-		dependencies = { "kyazdani42/nvim-web-devicons" },
-		config = function()
-			config.alpha()
-		end,
+		--  Startup menu
+		-- "goolord/alpha-nvim",
+		-- -- lazy = false,
+		-- dependencies = { "DaikyXendo/nvim-material-icon" },
+		-- config = function()
+		-- 	config.alpha()
+		-- end,
 	},
+	-- Theme
 	{
-		"folke/tokyonight.nvim",
+		"rebelot/kanagawa.nvim",
 		lazy = false,
 	},
 	{
 		"nvim-lualine/lualine.nvim",
 		event = "BufAdd",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
+		dependencies = { "DaikyXendo/nvim-material-icon" },
 		config = function()
 			config.lualine()
 		end,
@@ -41,6 +43,18 @@ return {
 		opts = {},
 		config = function()
 			config.ibl()
+		end,
+	},
+	{
+		"DaikyXendo/nvim-material-icon",
+		lazy = false,
+		opts = {},
+	},
+	{
+		"lewis6991/gitsigns.nvim",
+		event = "BufAdd",
+		init = function()
+			config.gits()
 		end,
 	},
 }

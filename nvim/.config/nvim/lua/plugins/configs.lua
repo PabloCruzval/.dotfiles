@@ -4,7 +4,7 @@ local mason = function()
 end
 
 local mason_lspconfig = function()
-	local capabilities = require("cmp_nvim_lsp").default_capabilities()
+	-- local capabilities = require("cmp_nvim_lsp").default_capabilities()
 	require("mason-lspconfig").setup({
 		ensure_installed = { "lua_ls" },
 		automatic_enable = true,
@@ -44,11 +44,11 @@ end
 
 --- Neo Tree
 local neotree = function()
-	require('neo-tree').setup({
+	require("neo-tree").setup({
 		filesystem = {
 			filtered_items = {
 				hide_dotfiles = false,
-			}
+			},
 		},
 	})
 end
@@ -71,6 +71,7 @@ local none_ls = function()
 		sources = {
 			null_ls.builtins.formatting.stylua,
 			null_ls.builtins.formatting.prettier,
+			require("none-ls.diagnostics.eslint"),
 		},
 	})
 end
@@ -143,15 +144,15 @@ end
 
 --- Alpha
 local alpha = function()
-	local alpha_dashboards_headers = require 'dashboards'
-	local alpha = require 'alpha'
-	local dashboard = require 'alpha.themes.dashboard'
+	local alpha_dashboards_headers = require("dashboards")
+	local alpha = require("alpha")
+	local dashboard = require("alpha.themes.dashboard")
 
 	local function alpha_format_text(text)
 		return {
-			type = 'text',
+			type = "text",
 			val = text,
-			opts = { hl = 'NvimDashColor', shrink_margin = false, position = 'center' },
+			opts = { hl = "NvimDashColor", shrink_margin = false, position = "center" },
 		}
 	end
 
@@ -163,14 +164,14 @@ local alpha = function()
 		return formated_text
 	end
 
-	dashboard.section.header.type = 'group'
+	dashboard.section.header.type = "group"
 	dashboard.section.header.val = format_text(alpha_dashboards_headers)
 
 	dashboard.section.buttons.val = {
-		dashboard.button('e', '  New File', ':ene <BAR> startinsert <CR>'),
-		dashboard.button('f', '  Find File', '<cmd> Telescope find_files <CR>'),
-		dashboard.button('r', '  Recently Opened Files', ':Telescope oldfiles<CR>'),
-		dashboard.button('q', '󰩈  Exit', ':qa<CR>'),
+		dashboard.button("e", "  New File", ":ene <BAR> startinsert <CR>"),
+		dashboard.button("f", "  Find File", "<cmd> Telescope find_files <CR>"),
+		dashboard.button("r", "  Recently Opened Files", ":Telescope oldfiles<CR>"),
+		dashboard.button("q", "󰩈  Exit", ":qa<CR>"),
 	}
 
 	alpha.setup(dashboard.opts)
@@ -282,7 +283,7 @@ local obsidian = function()
 			subdir = "zTemplates", -- Subdirectory for templates
 			date_format = "%Y-%m-%d-%a", -- Date format for templates
 			gtime_format = "%H:%M", -- Time format for templates
-			tags = "",             -- Default tags for templates
+			tags = "", -- Default tags for templates
 		},
 	}
 end
@@ -303,6 +304,77 @@ local ibl = function()
 	-- hooks.register(hooks.type.WHITESPACE, hooks.builtin.hide_first_tab_indent_level)
 end
 
+local gits = function()
+	require("gitsigns").setup({
+		on_attach = function(bufnr)
+			local gitsigns = require("gitsigns")
+
+			local function map(mode, l, r, opts)
+				opts = opts or {}
+				opts.buffer = bufnr
+				vim.keymap.set(mode, l, r, opts)
+			end
+
+			map("n", "]c", function()
+				if vim.wo.diff then
+					vim.cmd.normal({ "]c", bang = true })
+				else
+					gitsigns.nav_hunk("next")
+				end
+			end, { desc = "Git: Siguiente cambio (hunk)" })
+
+			map("n", "[c", function()
+				if vim.wo.diff then
+					vim.cmd.normal({ "[c", bang = true })
+				else
+					gitsigns.nav_hunk("prev")
+				end
+			end, { desc = "Git: Cambio anterior (hunk)" })
+
+			-- Actions
+			map("n", "<leader>gs", gitsigns.stage_hunk, { desc = "Git: Agregar hunk" })
+			map("n", "<leader>gr", gitsigns.reset_hunk, { desc = "Git: Revertir hunk" })
+
+			map("v", "<leader>gs", function()
+				gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+			end, { desc = "Git: Agregar hunk seleccionado" })
+
+			map("v", "<leader>gr", function()
+				gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+			end, { desc = "Git: Revertir hunk seleccionado" })
+
+			map("n", "<leader>gS", gitsigns.stage_buffer, { desc = "Git: Agregar todo el buffer" })
+			map("n", "<leader>gR", gitsigns.reset_buffer, { desc = "Git: Revertir todo el buffer" })
+
+			map("n", "<leader>gh", gitsigns.preview_hunk, { desc = "Git: Previsualizar hunk" })
+			map("n", "<leader>gi", gitsigns.preview_hunk_inline, { desc = "Git: Previsualizar hunk en línea" })
+
+			map("n", "<leader>gb", function()
+				gitsigns.blame_line({ full = true })
+			end, { desc = "Git: Blame en línea" })
+
+			map("n", "<leader>gd", gitsigns.diffthis, { desc = "Git: Diff con HEAD" })
+
+			map("n", "<leader>gD", function()
+				gitsigns.diffthis("~")
+			end, { desc = "Git: Diff con último commit" })
+
+			map("n", "<leader>gQ", function()
+				gitsigns.setqflist("all")
+			end, { desc = "Git: Enviar todos los hunks al quickfix" })
+
+			map("n", "<leader>gq", gitsigns.setqflist, { desc = "Git: Enviar hunks actuales al quickfix" })
+
+			-- Toggles
+			map("n", "<leader>gbb", gitsigns.toggle_current_line_blame, { desc = "Git: Alternar blame línea actual" })
+			map("n", "<leader>gww", gitsigns.toggle_word_diff, { desc = "Git: Alternar diff por palabra" })
+
+			-- Text object
+			map({ "o", "x" }, "ih", gitsigns.select_hunk, { desc = "Git: Seleccionar hunk" })
+		end,
+	})
+end
+
 return {
 	mason = mason,
 	mason_lspconfig = mason_lspconfig,
@@ -317,4 +389,5 @@ return {
 	neotree = neotree,
 	conform = conform,
 	ibl = ibl,
+	gits = gits,
 }

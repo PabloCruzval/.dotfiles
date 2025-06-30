@@ -74,15 +74,15 @@ alias nv="nvim"
 alias ls='ls -l --color'
 alias py="python"
 alias nob="cd ~/Obsidian/Home/ && nvim /home/nyx/Obsidian/Home/Hubs/1741441427-global-hub.md"
+alias stMode="cd ~/Documentos/Estudio/"
 alias hellwalp="/home/nyx/Plantillas/HellWall/hellwalp.sh"
 eval "$(fzf --zsh)"
 eval "$(zoxide init --cmd cd zsh)"
 
 
 # Export
-export EDITOR='nvim'
+export EDITOR='code'
 export PATH="/home/nyx/.cargo/bin/:$PATH"
-# source /home/nyx/Plantillas/HellWall/colors-term.sh
 
 # bun completions
 [ -s "/home/nyx/.bun/_bun" ] && source "/home/nyx/.bun/_bun"
@@ -90,3 +90,11 @@ export PATH="/home/nyx/.cargo/bin/:$PATH"
 # bun
 export BUN_INSTALL="$HOME/.bun"
 export PATH="$BUN_INSTALL/bin:$PATH"
+
+# pnpm
+export PNPM_HOME="/home/nyx/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end

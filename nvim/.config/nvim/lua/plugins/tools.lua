@@ -1,6 +1,10 @@
 local config = require("plugins.configs")
 
 return {
+	--- IA
+	{
+		"github/copilot.vim",
+	},
 	--- LSP & Mason
 	{
 		"williamboman/mason.nvim",
@@ -64,6 +68,9 @@ return {
 	{
 		"nvimtools/none-ls.nvim",
 		event = "BufAdd",
+		dependencies = {
+			"nvimtools/none-ls-extras.nvim",
+		},
 		config = function()
 			config.none_ls()
 		end,
@@ -79,10 +86,17 @@ return {
 	--- Auto pairs
 	{
 		"windwp/nvim-autopairs",
-		event = "InsertEnter",
+		event = "BufAdd",
+		dependencies = {
+			{
+				"kylechui/nvim-surround",
+				config = function()
+					require("nvim-surround").setup()
+				end,
+			},
+		},
 		opts = {},
 	},
-
 	--- Treesitter
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -119,13 +133,13 @@ return {
 		"nvim-neo-tree/neo-tree.nvim",
 		lazy = false,
 		dependencies = {
-			'nvim-lua/plenary.nvim',
-			'nvim-tree/nvim-web-devicons',
-			'MunifTanjim/nui.nvim',
+			"nvim-lua/plenary.nvim",
+			-- "nvim-tree/nvim-web-devicons",
+			"MunifTanjim/nui.nvim",
 		},
 		config = function()
 			config.neotree()
-		end
+		end,
 	},
 
 	--- Obsidian
@@ -141,5 +155,37 @@ return {
 			"nvim-lua/plenary.nvim",
 		},
 		opts = config.obsidian(),
+	},
+	--- MarkDown
+	{
+		"brianhuster/live-preview.nvim",
+		ft = { "markdown" },
+		dependencies = {
+			-- You can choose one of the following pickers
+			"nvim-telescope/telescope.nvim",
+			"ibhagwan/fzf-lua",
+			"echasnovski/mini.pick",
+		},
+		config = function()
+			require("livepreview.config").set()
+		end,
+	},
+	{
+		"luckasRanarison/tailwind-tools.nvim",
+		ft = { "typescriptreact", "html" },
+		name = "tailwind-tools",
+		build = ":UpdateRemotePlugins",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+			"nvim-telescope/telescope.nvim", -- optional
+			"neovim/nvim-lspconfig", -- optional
+			{
+				"brenoprata10/nvim-highlight-colors",
+				config = function()
+					require("nvim-highlight-colors").setup({})
+				end,
+			},
+		},
+		opts = {}, -- your configuration
 	},
 }
